@@ -4,7 +4,7 @@
     <!-- Your specific content for the 'content' section goes here -->
     <div class="container">
 
-        <table class="table" id="siswa-table">
+        <table class="table table-striped" id="siswa-table">
             <thead>
                 <tr>
                     <th>NIS</th>
