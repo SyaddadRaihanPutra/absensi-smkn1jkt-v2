@@ -10,7 +10,7 @@
                         </div>
                         <h5 class="mt-5 card-title">DATA SISWA</h5>
                         <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-outline-primary">Lihat selengkapnya</a>
+                        <a href="{{ route('siswa.index') }}" class="btn btn-outline-primary">Lihat selengkapnya</a>
                     </div>
                 </div>
             </div>
