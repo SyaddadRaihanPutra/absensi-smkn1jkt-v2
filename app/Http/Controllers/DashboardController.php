@@ -8,19 +8,27 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $role_id = Auth::user()->role_id;
+        $role = Auth::user()->role;
 
-        if ($role_id == '1') {
-            $role_id = "Administrator";
-            return view('dashboard.admin.index', compact('role_id')); //ROLE ADMIN
+        if ($role == '1') {
+            $role = "Administrator";
+            return view('dashboard.admin.index', compact('role')); //ROLE ADMIN
         }
-        if ($role_id == '2') {
-            $role_id = "Guru";
-            return view('dashboard.pengurus.index', compact('role_id')); //ROLE PENGURUS
+        if ($role == '2') {
+            $role = "piket";
+            return view('dashboard.piket.index', compact('role')); //ROLE guru piket
         }
-        if ($role_id == '3') {
-            $role_id = "Ketua Kelas";
-            return view('dashboard.pengurus.index', compact('role_id')); //ROLE MEMBER
+        if ($role == '3') {
+            $role = "guru";
+            return view('dashboard.guru.index', compact('role')); //ROLE guru dan orang tua 
+        }
+        if ($role == '5') {
+            $role = "walas";
+            return view('dashboard.walas.index', compact('role')); //ROLE walikeas
+        }
+        if ($role == '6') {
+            $role = "ketulas";
+            return view('dashboard.ketulas.index', compact('role')); //ROLE ketua kelas 
         }
     }
 }
