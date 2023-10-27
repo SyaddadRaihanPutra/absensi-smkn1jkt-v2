@@ -31,5 +31,7 @@ Route::middleware(['role:1'])->group(function () {
     // Rute yang hanya dapat diakses oleh admin
     Route::get('/siswa', [SiswaController::class,'index'])->name('siswa.index');
     Route::get('/siswa/data', [SiswaController::class,'data'])->name('siswa.data');
+    Route::post('/siswa/store', [SiswaController::class,'store'])->name('siswa.store');
+    Route::delete('/siswa/{id}', [SiswaController::class,'destroy'])->name('siswa.destroy');
 
 });

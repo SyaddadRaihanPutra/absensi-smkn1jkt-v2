@@ -12,21 +12,23 @@ class SiswaController extends Controller
    
     public function index(Request $request)
     {
-        $kelasOptions = Kelas::pluck('kelas_id','id'); // Untuk opsi dropdown kelas
-         return view('dashboard.admin.siswa', compact('kelasOptions'));
+         return view('dashboard.admin.siswa');
     }
 
     
-    public function siswa()
-    {
-    
-            $kelasOptions = Kelas::pluck('kelas_id','id'); // Untuk opsi dropdown kelas
-            return view('dashboard.admin.siswa', compact('kelasOptions'));
-    }
 
     public function data()
     {
-        $siswa = Siswa::select(['NIS', 'NAMA_LENGKAP', 'KELAS', 'JURUSAN']);
+        $siswa = Siswa::query();
+
+        return DataTables::of($siswa)
+            ->addColumn('action', function ($siswa) {
+                return '<button data-id="' . $siswa->id . '" class="btn-delete">Delete</button>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+
+        
 
         return DataTables::of($siswa)->make(true);
     }
@@ -43,23 +45,26 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'nip' => 'required|string|max:20|unique:users',
-            'kelas_id' => 'required|exists:kelas,id',
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'NIS' => 'required|integer',
+            'NAMA' => 'required|string|max:50',
+            'KELAS' => 'required|string|max:50',
+            'JURUSAN' => 'required|string|max:50',
         ]);
 
-        $password = Hash::make('default_password'); // Ganti dengan password yang diinginkan
+        // Create a new Siswa record
+        $siswa = new Siswa();
+        $siswa->NIS = $validatedData['NIS'];
+        $siswa->NAMA_LENGKAP = $validatedData['NAMA'];
+        $siswa->KELAS = $validatedData['KELAS'];
+        $siswa->JURUSAN = $validatedData['JURUSAN'];
 
-        User::create([
-            'name' => $request->nama,
-            'nip' => $request->nip, // Asumsi email dan NIP sama
-            'password' => $password,
-            'role' => 2,
-            'kelas_id' => $request->kelas_id,
-        ]);
+        // Save the record to the database
+        $siswa->save();
 
-        return redirect()->route('users.siswa')->with('success', 'Siswa added successfully.');
+        // Redirect to a success page or return a response as needed
+        return redirect()->route('siswa.index')->with('success', 'Siswa added successfully.');
     }
 
     /**
@@ -89,8 +94,11 @@ class SiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+    public function destroy($id)
+{
+    $siswa = Siswa::findOrFail($id);
+    $siswa->delete();
+
+    return response()->json(['message' => 'Siswa berhasil dihapus.']);
+}
 }

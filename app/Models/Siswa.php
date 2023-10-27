@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Siswa extends Model
 {
     protected $table = 'tb_siswa';
-    protected $fillable = ['NIS', 'NAMA_LENGKAP', 'KELAS', 'JURUSAN'];
+    protected $fillable = ['id','NIS', 'NAMA_LENGKAP', 'KELAS', 'JURUSAN'];
 }
 
