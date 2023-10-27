@@ -8,7 +8,7 @@
     <title>Dashboard | Absensi Peserta Didik</title>
 
     <link rel="shortcut icon" href="assets/img/logo.ico" type="image/x-icon">
-
+    <link rel="stylesheet" href="http://cdn.datatables.net/responsive/1.0.2/css/dataTables.responsive.css"/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
 

@@ -18,6 +18,7 @@
                     <th>NAMA_LENGKAP</th>
                     <th>KELAS</th>
                     <th>JURUSAN</th>
+                    <th>ACTION</th>
                 </tr>
             </thead>
         </table>
@@ -30,19 +31,21 @@
         </div>
         <div class="card-body py-2">
             <div class="table-responsive">
-            <form method="POST" action="http://203.77.246.219:8015/siswa">
-<input type="hidden" name="_token" value="2Fullu8jUEXm3kaEV1RCpyD8pXENGJM4A2N1ZFiq">        <label for="nama">Nama:</label>
-<input type="text" name="nama" id="nama" class="form-control" required="">
+            <form method="POST" action="{{ route('siswa.store') }}">
+                @csrf
+                    <label for="nama">Nama:</label>
+<input type="text" name="NAMA" id="NAMA" class="form-control" required="">
 
 <label for="nip">NISN:</label>
-<input type="text" name="nip" id="nip" class="form-control" required="">
+<input type="text" name="NIS" id="NIS" class="form-control" required="">
 <label for="nip">KELAS:</label>
-<input type="text" name="nip" id="nip" class="form-control" required="">
+<input type="text" name="KELAS" id="KELAS" class="form-control" required="">
 <label for="nip">JURUSAN:</label>
-<input type="text" name="nip" id="nip" class="form-control" required="">
+<input type="text" name="JURUSAN" id="JURUSAN" class="form-control" required="">
 
 </select>
-<button type="submit" class="btn btn-primary mt-5"  disabled>Add Siswa</button>
+<button type="submit" class="btn btn-primary mt-5" >Add Siswa</button>
+
 </form>
             </div>
         </div>
@@ -71,10 +74,33 @@
                     { data: 'NAMA_LENGKAP', name: 'NAMA_LENGKAP' },
                     { data: 'KELAS', name: 'KELAS' },
                     { data: 'JURUSAN', name: 'JURUSAN' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false },
+
                 ]
             });
         });
     </script>
+<script>
+    $(document).on('click', '.btn-delete', function () {
+        var id = $(this).data('id');
+        if (confirm("Apakah Anda yakin ingin menghapus siswa ini?")) {
+            $.ajax({
+                type: "DELETE",
+                url: "{{ route('siswa.destroy', '') }}/" + id,
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                },
+                success: function (data) {
+                    alert("Siswa berhasil dihapus.");
+                    $('#siswa-table').DataTable().ajax.reload();
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                }
+            });
+        }
+    });
+</script>
   
 
 
