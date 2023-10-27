@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
+use App\Models\Kelas;
 
 
 class SiswaController extends Controller
@@ -11,8 +12,16 @@ class SiswaController extends Controller
    
     public function index(Request $request)
     {
+        $kelasOptions = Kelas::pluck('kelas_id','id'); // Untuk opsi dropdown kelas
+         return view('dashboard.admin.siswa', compact('kelasOptions'));
+    }
 
-         return view('dashboard.admin.siswa');
+    
+    public function siswa()
+    {
+    
+            $kelasOptions = Kelas::pluck('kelas_id','id'); // Untuk opsi dropdown kelas
+            return view('dashboard.admin.siswa', compact('kelasOptions'));
     }
 
     public function data()
@@ -34,7 +43,23 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'nip' => 'required|string|max:20|unique:users',
+            'kelas_id' => 'required|exists:kelas,id',
+        ]);
+
+        $password = Hash::make('default_password'); // Ganti dengan password yang diinginkan
+
+        User::create([
+            'name' => $request->nama,
+            'nip' => $request->nip, // Asumsi email dan NIP sama
+            'password' => $password,
+            'role' => 2,
+            'kelas_id' => $request->kelas_id,
+        ]);
+
+        return redirect()->route('users.siswa')->with('success', 'Siswa added successfully.');
     }
 
     /**
